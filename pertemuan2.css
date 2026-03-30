@@ -158,7 +158,7 @@ a {
     background-color: #c8324a;
 }
 
-/* 7 grid joki) */
+/* 7 grid joki */
 .grid-container {
     display: grid;
     grid-template-columns: 1fr; 
@@ -190,7 +190,7 @@ a {
     color: #666;
 }
 
-/* -8 tabel daftar data */
+/* -8 daftar data */
 .table-title {
     margin-bottom: 15px;
 }
@@ -217,7 +217,7 @@ a {
     background-color: #f2f2f2;
 }
 
-/* -9 footer responsif */
+/* -9 footer*/
 .footer {
     background-color: #1a1a2e;
     color: white;
@@ -236,7 +236,7 @@ a {
     color: #e94560;
 }
 
-/* -10 media queries (tablet & desktop) */
+/* -10 tablet & desktop*/
 @media (min-width: 768px) {
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
