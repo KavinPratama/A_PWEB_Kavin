@@ -135,7 +135,6 @@ const renderFilteredData = () => {
         
         return matchSearch && matchCategory;
     });
-
     renderTable(filtered);
 };
 
