@@ -1,4 +1,4 @@
-/* -1 global reset */
+/* global reset */
 * {
     margin: 0;
     padding: 0;
@@ -20,7 +20,7 @@ a {
     padding: 20px;
 }
 
-/* -2 navbar */
+/* navbar */
 .navbar {
     position: fixed;
     top: 0;
@@ -56,7 +56,7 @@ a {
     color: #e94560;
 }
 
-/* -3 gradient & overlay */
+/* gradient & overlay */
 .hero {
     background: linear-gradient(135deg, rgba(26,26,46,0.9), rgba(233,69,96,0.8));
     color: white;
@@ -70,14 +70,14 @@ a {
     margin-bottom: 10px;
 }
 
-/* -4 layout utama */
+/* layout utama */
 .layout-wrapper {
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-/* -5 sidebar */
+/* sidebar */
 .sidebar {
     background: #fff;
     padding: 20px;
@@ -123,7 +123,7 @@ a {
     background-color: #e94560;
 }
 
-/* -6 form cari */
+/* form cari */
 .search-form {
     display: flex;
     gap: 10px;
@@ -158,7 +158,7 @@ a {
     background-color: #c8324a;
 }
 
-/* 7 grid joki */
+/* grid joki */
 .grid-container {
     display: grid;
     grid-template-columns: 1fr; 
@@ -190,9 +190,14 @@ a {
     color: #666;
 }
 
-/* -8 daftar data */
+/* daftar data */
 .table-title {
     margin-bottom: 15px;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
 }
 
 .data-table {
@@ -200,6 +205,7 @@ a {
     border-collapse: collapse;
     margin-bottom: 40px;
     background: #fff;
+    min-width: 600px;
 }
 
 .data-table th, .data-table td {
@@ -217,7 +223,7 @@ a {
     background-color: #f2f2f2;
 }
 
-/* -9 footer*/
+/* footer*/
 .footer {
     background-color: #1a1a2e;
     color: white;
@@ -236,7 +242,7 @@ a {
     color: #e94560;
 }
 
-/* -10 tablet & desktop*/
+/* tampilan lain */
 @media (min-width: 768px) {
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
@@ -262,9 +268,66 @@ a {
 
     .main-content {
         flex: 1;
+        overflow: hidden;
     }
 
     .grid-container {
         grid-template-columns: repeat(4, 1fr);
     }
+}
+
+/* from&statistik*/
+.form-card {
+    border: 2px dashed #e94560;
+    margin-bottom: 25px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+@media (min-width: 768px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .form-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.error-msg {
+    color: red;
+    font-size: 0.85rem;
+    display: none;
+    font-weight: bold;
+}
+
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-box {
+    flex: 1;
+    min-width: 150px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-left: 4px solid #1a1a2e;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e94560;
 }
