@@ -1,30 +1,32 @@
-//inisiasi lokal storage
-let jokiData = JSON.parse(localStorage.getItem('jokssDataArr')) || [];
+
+const defaultDataJoki = [
+    { id: '1', kode: 'ML-01', nama: 'Epic ke Legend', kategori: 'Mobile Legends', stok: '10', harga: '50000', tanggal: '2026-04-21' },
+    { id: '2', kode: 'ML-02', nama: 'Legend ke Mythic', kategori: 'Mobile Legends', stok: '3', harga: '100000', tanggal: '2026-04-21' },
+    { id: '3', kode: 'VL-01', nama: 'Iron ke Gold', kategori: 'Valorant', stok: '5', harga: '150000', tanggal: '2026-04-22' }
+];
+
+let jokiData = JSON.parse(localStorage.getItem('dataJokssFinal')) || defaultDataJoki;
 let editId = null;
 
-// DOM
+// DOM Selection
 const form = document.getElementById('form-joki');
 const tableBody = document.getElementById('table-body');
 const searchInput = document.getElementById('search-input');
 const checkboxes = document.querySelectorAll('.filter-chk');
 
-// arrow function & array methods
+
 const updateStats = (data) => {
     const totalItem = data.length;
-    // reduce
     const totalNilai = data.reduce((acc, curr) => acc + (Number(curr.stok) * Number(curr.harga)), 0);
-    // filter
     const stokMenipis = data.filter(item => Number(item.stok) < 5).length;
 
-    // DOM Manipulation untuk statistik
     document.getElementById('stat-total').textContent = totalItem;
     document.getElementById('stat-nilai').textContent = totalNilai.toLocaleString('id-ID');
     document.getElementById('stat-menipis').textContent = stokMenipis;
 };
 
-// render tabel dari Array of Objects
 const renderTable = (data) => {
-    tableBody.innerHTML = '';
+    tableBody.innerHTML = ''; 
     
     data.forEach(item => {
         const tr = document.createElement('tr');
@@ -35,9 +37,9 @@ const renderTable = (data) => {
             <td>${item.stok}</td>
             <td>Rp ${Number(item.harga).toLocaleString('id-ID')}</td>
             <td>${item.tanggal}</td>
-            <td>
-                <button class="btn-search btn-edit" data-id="${item.id}" style="padding: 6px 12px; margin-right: 5px;">Edit</button>
-                <button class="btn-order btn-delete" data-id="${item.id}" style="padding: 6px 12px; background-color: #333;">Hapus</button>
+            <td class="td-aksi">
+                <button class="btn-edit-tbl" data-id="${item.id}">Edit</button>
+                <button class="btn-delete-tbl" data-id="${item.id}">Hapus</button>
             </td>
         `;
         tableBody.appendChild(tr);
@@ -46,7 +48,7 @@ const renderTable = (data) => {
     updateStats(data);
 };
 
-// form tambah/edit custom
+// isi custom
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     
@@ -70,36 +72,33 @@ form.addEventListener('submit', (e) => {
     };
 
     if (editId) {
-        // update array & re render
+        // edit array
         jokiData = jokiData.map(item => item.id === editId ? newData : item);
         editId = null;
         document.getElementById('btn-submit').textContent = 'Simpan Paket Baru';
     } else {
-        // nambah data baru
         jokiData.push(newData);
     }
 
-    //localStorage
-    localStorage.setItem('jokssDataArr', JSON.stringify(jokiData));
+    // nyimpan ke lokal storage
+    localStorage.setItem('dataJokssFinal', JSON.stringify(jokiData));
     form.reset();
     renderFilteredData();
 });
 
-// tombol di dalam tabel
+// edit hapus tabelnya
 tableBody.addEventListener('click', (e) => {
     const id = e.target.getAttribute('data-id');
 
-    // hapus data
-    if (e.target.classList.contains('btn-delete')) {
+    if (e.target.classList.contains('btn-delete-tbl')) {
         if (confirm('Yakin mau hapus paket joki ini?')) {
             jokiData = jokiData.filter(item => item.id !== id);
-            localStorage.setItem('jokssDataArr', JSON.stringify(jokiData));
+            localStorage.setItem('dataJokssFinal', JSON.stringify(jokiData));
             renderFilteredData();
         }
     }
 
-    // edit form + data
-    if (e.target.classList.contains('btn-edit')) {
+    if (e.target.classList.contains('btn-edit-tbl')) {
         const item = jokiData.find(d => d.id === id);
         if (item) {
             document.getElementById('kode').value = item.kode;
@@ -111,40 +110,36 @@ tableBody.addEventListener('click', (e) => {
             
             editId = item.id;
             document.getElementById('btn-submit').textContent = 'Update Paket Joki';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'smooth' }); 
         }
     }
 });
 
-// pencarian & filter
+// cari dan filter
 const renderFilteredData = () => {
     const keyword = searchInput.value.toLowerCase();
     
-    // ambil value dari checkbox aktif
     const checkedCategories = Array.from(checkboxes)
         .filter(chk => chk.checked)
         .map(chk => chk.value);
 
-    // array method filter
     const filtered = jokiData.filter(item => {
-        // Psearch
         const matchSearch = item.nama.toLowerCase().includes(keyword) || item.kode.toLowerCase().includes(keyword);
-        
-        // syarat 6
         const matchCategory = checkedCategories.length === 0 || checkedCategories.includes(item.kategori);
         
         return matchSearch && matchCategory;
     });
+
     renderTable(filtered);
 };
 
-// pencarian realtime
+// pencarian
 searchInput.addEventListener('input', renderFilteredData);
 
-//checkbox Filter
+// chechkbox filter
 checkboxes.forEach(chk => {
     chk.addEventListener('change', renderFilteredData);
 });
 
-// render pertama kali
+// Init
 renderFilteredData();
