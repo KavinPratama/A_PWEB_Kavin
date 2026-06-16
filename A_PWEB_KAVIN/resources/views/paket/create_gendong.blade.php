@@ -260,7 +260,7 @@
 
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
-            fetch("/api/cek-nickname", {
+            fetch(window.location.origin + "/api/cek-nickname", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
