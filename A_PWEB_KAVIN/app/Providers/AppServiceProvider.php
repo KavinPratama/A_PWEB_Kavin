@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL; // <-- INI YANG TADI KETINGGALAN CIK!
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,9 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
+    /**
+     * Bootstrap any application services.
+     */
     public function boot(): void
     {
         URL::forceScheme('https');
