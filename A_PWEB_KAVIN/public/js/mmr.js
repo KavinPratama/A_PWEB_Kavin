@@ -1,60 +1,57 @@
-const listHero = ['Ling', 'Fanny', 'Gusion', 'Chou', 'Nolan', 'Claude', 'Harith', 'Valentina'];
+document.addEventListener("DOMContentLoaded", function() {
+    // Panggil data pertama kali saat halaman dimuat
+    fetchMmrByCity();
+});
 
-async function fetchMmrByCity() {
+function fetchMmrByCity() {
     const city = document.getElementById('city-selector').value;
     const loading = document.getElementById('mmr-loading');
     const content = document.getElementById('mmr-content');
-    const tableBody = document.getElementById('mmr-table-body');
+    const tbody = document.getElementById('mmr-table-body');
 
+    // Tampilkan loading, sembunyikan tabel
     loading.style.display = 'flex';
     content.style.display = 'none';
 
-    try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users');
-        
-        if (!response.ok) {
-            throw new Error('Koneksi server gagal');
+    // Simulasi ambil data dari server (delay 1.5 detik)
+    setTimeout(() => {
+        let data = [];
+
+        // Data dummy berdasarkan kota
+        if (city === 'Jember') {
+            data = [
+                { rank: 1, name: 'KepoGaming (88219)', hero: 'Ling', mmr: '4,250' },
+                { rank: 2, name: 'KangJoki_UNEJ (11234)', hero: 'Fanny', mmr: '3,980' },
+                { rank: 3, name: 'SantuyCihuyy (99821)', hero: 'Chou', mmr: '3,850' }
+            ];
+        } else if (city === 'Surabaya') {
+            data = [
+                { rank: 1, name: 'SuroBoy (55412)', hero: 'Lancelot', mmr: '4,500' },
+                { rank: 2, name: 'BonekSavage (33211)', hero: 'Gusion', mmr: '4,100' }
+            ];
+        } else {
+            data = [
+                { rank: 1, name: 'PlayerUnknown (00000)', hero: 'Nana', mmr: '3,500' }
+            ];
         }
 
-        const users = await response.json();
-        const topPlayers = users.slice(0, 5); 
-
-        tableBody.innerHTML = ''; 
-
-        topPlayers.forEach((player, index) => {
-            const rank = index + 1;
-            const fakeGameId = `(${player.id * 143}92)`; 
-            const baseMmr = 4000 - (index * 250) + Math.floor(Math.random() * 50);
-            const hero = listHero[(index + player.id) % listHero.length];
-
-            let rankBadge = `<span class="text-gray-400 font-bold">${rank}</span>`;
-            if(rank === 1) rankBadge = `<span class="px-2 py-1 bg-yellow-500 text-gray-900 rounded-full font-bold text-xs">🥇 1</span>`;
-            if(rank === 2) rankBadge = `<span class="px-2 py-1 bg-gray-400 text-gray-900 rounded-full font-bold text-xs">🥈 2</span>`;
-            if(rank === 3) rankBadge = `<span class="px-2 py-1 bg-amber-600 text-white rounded-full font-bold text-xs">🥉 3</span>`;
-
-            const row = `
-                <tr class="hover:bg-gray-800/50 transition-colors">
-                    <td class="py-3 px-4 text-center">${rankBadge}</td>
-                    <td class="py-3 px-4">
-                        <span class="font-bold text-white block">${player.username}</span>
-                        <span class="text-xs text-gray-500">${fakeGameId}</span>
-                    </td>
-                    <td class="py-3 px-4 text-purple-300 font-medium">⚔️ ${hero}</td>
-                    <td class="py-3 px-4 text-right font-bold text-yellow-400">${baseMmr.toLocaleString('id-ID')} Pts</td>
+        // Susun HTML untuk tabel
+        let html = '';
+        data.forEach(player => {
+            html += `
+                <tr class="hover:bg-gray-800 transition-colors">
+                    <td class="py-3 px-4 text-center font-bold text-purple-400">#${player.rank}</td>
+                    <td class="py-3 px-4 text-white">${player.name}</td>
+                    <td class="py-3 px-4 text-gray-300">${player.hero}</td>
+                    <td class="py-3 px-4 text-right font-semibold text-green-400">${player.mmr}</td>
                 </tr>
             `;
-            tableBody.innerHTML += row;
         });
 
-        setTimeout(() => {
-            loading.style.display = 'none';
-            content.style.display = 'block';
-        }, 500);
+        // Masukkan ke tabel, sembunyikan loading, tampilkan tabel
+        tbody.innerHTML = html;
+        loading.style.display = 'none';
+        content.style.display = 'block';
 
-    } catch (error) {
-        loading.innerHTML = '<span class="text-red-500 font-semibold">❌ Gagal melakukan sinkronisasi server MMR.</span>';
-        console.error('Error fetching MMR:', error);
-    }
+    }, 1500); // 1.5 detik
 }
-
-document.addEventListener('DOMContentLoaded', fetchMmrByCity);

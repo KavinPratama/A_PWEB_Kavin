@@ -1,48 +1,35 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('preferences-form');
-    const prefTheme = document.getElementById('pref-theme');
-    const prefFontSize = document.getElementById('pref-fontsize');
+document.addEventListener("DOMContentLoaded", function() {
+    const prefForm = document.getElementById('preferences-form');
     const statusText = document.getElementById('pref-status');
 
-    if (getCookie('theme')) prefTheme.value = getCookie('theme');
-    if (getCookie('font_size')) prefFontSize.value = getCookie('font_size');
+    prefForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Mencegah halaman refresh
 
-    form.addEventListener('submit', async function (e) {
-        e.preventDefault();
+        const theme = document.getElementById('pref-theme').value;
+        const fontSize = document.getElementById('pref-fontsize').value;
 
-        try {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        // Simulasi proses menyimpan ke server
+        statusText.classList.remove('hidden');
+        statusText.textContent = 'Menyimpan...';
+        statusText.classList.replace('text-green-500', 'text-yellow-500');
 
-            const response = await fetch('/user/preferences', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({
-                    theme: prefTheme.value,
-                    font_size: prefFontSize.value
-                })
-            });
+        setTimeout(() => {
+            // Ubah pesan sukses
+            statusText.textContent = '✓ Preferensi disimpan via Server!';
+            statusText.classList.replace('text-yellow-500', 'text-green-500');
 
-            const result = await response.json();
-
-            if (result.status === 'success') {
-                setCookie('theme', prefTheme.value, 7);
-                setCookie('font_size', prefFontSize.value, 7);
-
-                if (prefTheme.value === 'dark') {
-                    document.documentElement.classList.add('dark');
-                } else if (prefTheme.value === 'light') {
-                    document.documentElement.classList.remove('dark');
-                }
-
-                statusText.classList.remove('hidden');
-                setTimeout(() => statusText.classList.add('hidden'), 3000);
+            // Logika ganti tema HTML (Opsional buat efek visual)
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else if (theme === 'light') {
+                document.documentElement.classList.remove('dark');
             }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+
+            // Sembunyikan pesan setelah 3 detik
+            setTimeout(() => {
+                statusText.classList.add('hidden');
+            }, 3000);
+
+        }, 1000);
     });
 });

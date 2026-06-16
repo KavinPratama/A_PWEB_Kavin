@@ -14,9 +14,15 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('username')->unique(); // ✨ Tambahan: Username unik untuk login/profil
             $table->string('email')->unique();
+            $table->string('whatsapp');          // ✨ Tambahan: Nomor WhatsApp pembeli joki
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // ✨ INI DIA JALUR NINJA ROLE-NYA CIK! ✨
+            $table->string('role')->default('pelanggan');
+
             $table->rememberToken();
             $table->timestamps();
         });
