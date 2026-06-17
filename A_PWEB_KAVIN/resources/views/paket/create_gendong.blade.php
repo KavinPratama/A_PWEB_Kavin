@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <body class="bg-[#1f2125] text-gray-200 min-h-screen pb-12 font-sans">
 
     <!-- NAVBAR SIMPLE -->
@@ -260,7 +259,7 @@
 
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
-            fetch(window.location.origin + "/api/cek-nickname", {
+            fetch('/api/cek-nickname', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
