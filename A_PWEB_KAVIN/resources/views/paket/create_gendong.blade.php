@@ -253,31 +253,25 @@
     </script>
     <script>
         function cekNickname() {
-            let uid = document.getElementById('user_id').value;
-            let zid = document.getElementById('zone_id').value;
-            let btn = document.querySelector('button[onclick="cekNickname()"]');
+    let uid = document.getElementById('user_id').value;
+    let zid = document.getElementById('zone_id').value;
+    let btn = document.querySelector('button[onclick="cekNickname()"]');
 
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
-            fetch('/api/cek-nickname', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({ user_id: uid, zone_id: zid })
-            })
-            .then(res => res.json())
-            .then(data => {
-                btn.innerHTML = 'Cek';
-                if(data.success) {
-                    document.getElementById('nickname_result').value = data.name;
-                    document.getElementById('request_hero').value = uid + ' (' + zid + ')';
-                } else {
-                    alert("ID tidak ditemukan!");
-                }
-            });
+    fetch(`https://api.isan.eu.org/nickname/ml?id=${uid}&zone=${zid}`)
+    .then(res => res.json())
+    .then(data => {
+        btn.innerHTML = 'Cek';
+        if(data.success) {
+            document.getElementById('nickname_result').value = data.name;
+            document.getElementById('request_hero').value = uid + ' (' + zid + ')';
+        } else {
+            alert("ID tidak ditemukan!");
         }
+    });
+}
     </script>
 </body>
 </html>
+fetch
